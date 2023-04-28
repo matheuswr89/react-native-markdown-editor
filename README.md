@@ -81,7 +81,7 @@ function codeExample(arg) {
 
 Import the editor through
 
-`import { MarkdownEditor } from 'react-native-markdown-editor';`
+`import { MarkdownEditor } from '@matheuswr89/react-native-markdown-editor';`
 
 And use like this this in the jsx
 
