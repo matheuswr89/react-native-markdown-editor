@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {renderFormatButtons} from 'react-native-markdown-editor/src/lib/renderButtons';
 import Markdown from 'react-native-marked';
 import {MaterialCommunityIcons as IconMaterialCommunityIcons} from 'react-native-vector-icons';
+import {renderFormatButtons} from './renderButtons';
 
 const styles = StyleSheet.create({
   composeText: {
