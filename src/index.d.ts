@@ -1,8 +1,8 @@
-import {ComponentType} from 'react';
+import { ComponentType } from 'react';
 import MarkdownEditor from './lib/MarkdownEditor';
 
-export function replaceBetween(): string;
-export function isStringWebLink(): boolean;
+export function replaceBetween(text: string, selection: Object, what: string): string;
+export function isStringWebLink(value: string): boolean;
 
 export interface MarkdownEditorProps {
   onMarkdownChange: (text: string) => void;
@@ -18,5 +18,4 @@ export interface MarkdownEditorProps {
 type MarkdownStatic = ComponentType<MarkdownEditorProps>;
 export const MarkdownEditor: MarkdownStatic;
 export type MarkdownEditor = MarkdownStatic;
-
 export default MarkdownEditor;

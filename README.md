@@ -1,4 +1,4 @@
-# React Native Markdown Editor [![npm version](https://badge.fury.io/js/@matheuswr89%2Freact-native-markdown-editor.svg)](https://badge.fury.io/js/@matheuswr89%2Freact-native-markdown-editor) [![Known Vulnerabilities](https://snyk.io/test/github/matheuswr89/react-native-markdown-editor/badge.svg)](https://snyk.io/test/github/matheuswr89/react-native-markdown-editor)
+# React Native Markdown Editor <a href="https://badge.fury.io/js/@matheuswr89%2Freact-native-markdown-editor"><img src="https://badge.fury.io/js/@matheuswr89%2Freact-native-markdown-editor.svg" alt="npm version" height="18"></a> [![Known Vulnerabilities](https://snyk.io/test/github/matheuswr89/react-native-markdown-editor/badge.svg)](https://snyk.io/test/github/matheuswr89/react-native-markdown-editor)
 
 This is a library for rendering a markdown editor for the markdown with helper buttons to easily write markdown. With live preview markdown as well (thanks to https://github.com/Benjamin-Dobell/react-native-markdown-view)
 
