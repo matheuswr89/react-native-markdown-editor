@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -61,12 +61,19 @@ export default function MarkdownEditor({
 }) {
   const [showPreview, setShowPreview] = useState(false);
   const [state, setState] = useState({
-    text: markdown || '',
+    text: '',
     selection: {
       start: 0,
       end: 0,
     },
   });
+
+  useEffect(() => {
+    setState((p) => ({
+      ...p,
+      text: markdown || '',
+    }));
+  }, [markdown]);
 
   const convertMarkdown = () => {
     setShowPreview(!showPreview);
