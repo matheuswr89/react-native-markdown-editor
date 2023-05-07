@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -6,8 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
-import Markdown from 'react-native-marked';
+import {useMarkdown, useMarkdownHookOptions} from 'react-native-marked';
 import {MaterialCommunityIcons as IconMaterialCommunityIcons} from 'react-native-vector-icons';
 import {renderFormatButtons} from './renderButtons';
 
@@ -95,24 +96,6 @@ export default function MarkdownEditor({
     if (onMarkdownChange) onMarkdownChange(input);
   };
 
-  const renderPreview = () => {
-    return (
-      <View style={markdownViewStyles || styles.preview}>
-        <Markdown
-          key={`_keyMarkdownEdit`}
-          flatListProps={{
-            listKey: (item, index) => `_keylistEdit${index.toString()}`,
-            keyExtractor: (item, index) =>
-              `_keyExtractorEdit${index.toString()}`,
-            style: {marginLeft: 3},
-            initialNumToRender: 5000 * 100 * 2,
-          }}
-          value={state.text === '' ? 'Markdown preview here' : state.text}
-        />
-      </View>
-    );
-  };
-
   return (
     <KeyboardAvoidingView behavior="padding">
       {!showPreview && (
@@ -125,10 +108,11 @@ export default function MarkdownEditor({
           value={state.text}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor || '#000'}
-          selection={state.selection}
         />
       )}
-      {showPreview ? renderPreview() : null}
+      {showPreview ? (
+        <RenderPreview text={state.text} style={markdownViewStyles} />
+      ) : null}
       <View style={buttonContainerStyles || styles.buttonContainer}>
         <TouchableOpacity
           onPress={convertMarkdown}
@@ -151,3 +135,22 @@ export default function MarkdownEditor({
     </KeyboardAvoidingView>
   );
 }
+
+const RenderPreview = ({text, style}) => {
+  const colorScheme = useColorScheme();
+
+  const options: useMarkdownHookOptions = {
+    colorScheme,
+  };
+  const elements = useMarkdown(
+    text === '' ? 'Markdown preview here' : text,
+    options,
+  );
+  return (
+    <View style={style || styles.preview}>
+      {elements.map((element, index) => (
+        <Fragment key={`demo_${index}`}>{element}</Fragment>
+      ))}
+    </View>
+  );
+};
