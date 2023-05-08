@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useMarkdown, useMarkdownHookOptions} from 'react-native-marked';
 import {MaterialCommunityIcons as IconMaterialCommunityIcons} from 'react-native-vector-icons';
+import {parseHTML} from './parseHtml';
 import {renderFormatButtons} from './renderButtons';
 
 const styles = StyleSheet.create({
@@ -59,6 +60,7 @@ export default function MarkdownEditor({
   textInputStyles,
   markdownViewStyles,
   placeholderTextColor,
+  colorScheme,
 }) {
   const [showPreview, setShowPreview] = useState(false);
   const [state, setState] = useState({
@@ -97,7 +99,7 @@ export default function MarkdownEditor({
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding">
+    <KeyboardAvoidingView behavior="height">
       {!showPreview && (
         <TextInput
           style={textInputStyles || styles.composeText}
@@ -111,7 +113,11 @@ export default function MarkdownEditor({
         />
       )}
       {showPreview ? (
-        <RenderPreview text={state.text} style={markdownViewStyles} />
+        <RenderPreview
+          text={state.text}
+          style={markdownViewStyles}
+          scheme={colorScheme}
+        />
       ) : null}
       <View style={buttonContainerStyles || styles.buttonContainer}>
         <TouchableOpacity
@@ -136,14 +142,14 @@ export default function MarkdownEditor({
   );
 }
 
-const RenderPreview = ({text, style}) => {
+const RenderPreview = ({text, style, scheme}) => {
   const colorScheme = useColorScheme();
 
   const options: useMarkdownHookOptions = {
-    colorScheme,
+    colorScheme: scheme || colorScheme,
   };
   const elements = useMarkdown(
-    text === '' ? 'Markdown preview here' : text,
+    text === '' ? 'Markdown preview here' : parseHTML(text),
     options,
   );
   return (
