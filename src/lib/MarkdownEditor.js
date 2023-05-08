@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {
-  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -99,7 +99,7 @@ export default function MarkdownEditor({
   };
 
   return (
-    <KeyboardAvoidingView behavior="height">
+    <ScrollView>
       {!showPreview && (
         <TextInput
           style={textInputStyles || styles.composeText}
@@ -138,7 +138,7 @@ export default function MarkdownEditor({
           {renderFormatButtons({state, setState}, buttonStyles)}
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
