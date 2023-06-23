@@ -54,5 +54,8 @@ export const parseHTML = (text) => {
     });
   }
 
-  return $.text();
+  return $.html()
+    .toString()
+    .replace('<html><head></head><body>', '')
+    .replace('</body></html>', '');
 };
