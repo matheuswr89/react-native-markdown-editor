@@ -1,7 +1,9 @@
 import * as cheerio from 'cheerio';
 
 export const parseHTML = (text) => {
-  const $ = cheerio.load(text);
+  const $ = cheerio.load(text, {
+    decodeEntities: false,
+  }, false);
   const head = '######';
 
   $('code').each(function (i, e) {
@@ -47,15 +49,26 @@ export const parseHTML = (text) => {
     const link = `*${$(this).text()}*`;
     $(this).replaceWith(link);
   });
+  $('p').each(function () {
+    $(this).replaceWith($(this).text());
+  });
+  $('br').each(function () {
+    $(this).replaceWith('\n');
+  });
   for (let i = 1; i <= 6; i++) {
     $('h' + i).each(function () {
       const headMarkdown = `${head.substring(0, i)} ${$(this).text()}`;
       $(this).replaceWith(headMarkdown);
     });
   }
-
   return $.html()
-    .toString()
-    .replace('<html><head></head><body>', '')
-    .replace('</body></html>', '');
+  .toString()
+  .replace(/&amp;/g, "&")
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&le;/g, '≤')
+  .replace(/&ge;/g, '≥')
+  .replace(/&#(\d+);/g, function (m, n) {
+    return String.fromCharCode(n);
+  });
 };
