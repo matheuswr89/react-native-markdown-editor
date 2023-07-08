@@ -8,7 +8,7 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import {useMarkdown, useMarkdownHookOptions} from 'react-native-marked';
+import {useMarkdown} from 'react-native-marked';
 import {MaterialCommunityIcons as IconMaterialCommunityIcons} from 'react-native-vector-icons';
 import {parseHTML} from './parseHtml';
 import {renderFormatButtons} from './renderButtons';
@@ -145,7 +145,7 @@ export default function MarkdownEditor({
 const RenderPreview = ({text, style, scheme}) => {
   const colorScheme = useColorScheme();
 
-  const options: useMarkdownHookOptions = {
+  const options = {
     colorScheme: scheme || colorScheme,
   };
   const elements = useMarkdown(

@@ -1,9 +1,13 @@
 import * as cheerio from 'cheerio';
 
 export const parseHTML = (text) => {
-  const $ = cheerio.load(text, {
-    decodeEntities: false,
-  }, false);
+  const $ = cheerio.load(
+    text,
+    {
+      decodeEntities: false,
+    },
+    false,
+  );
   const head = '######';
 
   $('code').each(function (i, e) {
@@ -62,13 +66,17 @@ export const parseHTML = (text) => {
     });
   }
   return $.html()
-  .toString()
-  .replace(/&amp;/g, "&")
-  .replace(/&lt;/g, '<')
-  .replace(/&gt;/g, '>')
-  .replace(/&le;/g, '≤')
-  .replace(/&ge;/g, '≥')
-  .replace(/&#(\d+);/g, function (m, n) {
-    return String.fromCharCode(n);
-  });
+    .toString()
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&le;/g, '≤')
+    .replace(/&ge;/g, '≥')
+    .replace(/&#(\d+);/g, function (m, n) {
+      return String.fromCharCode(n);
+    })
+    .replace(
+      /(<\/button><\/nativemodule><\/nativemodule><\/viewmanager>)/gm,
+      '',
+    );
 };
