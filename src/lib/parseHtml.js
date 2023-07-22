@@ -65,18 +65,18 @@ export const parseHTML = (text) => {
       $(this).replaceWith(headMarkdown);
     });
   }
-  return $.html()
-    .toString()
+  return $.html({
+    decodeEntities: true,
+    withEndIndices: false,
+    withStartIndices: false,
+  })
     .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&le;/g, '≤')
     .replace(/&ge;/g, '≥')
     .replace(/&#(\d+);/g, function (m, n) {
       return String.fromCharCode(n);
-    })
-    .replace(
-      /(<\/button><\/nativemodule><\/nativemodule><\/viewmanager>)/gm,
-      '',
-    );
+    });
 };
