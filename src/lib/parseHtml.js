@@ -69,6 +69,7 @@ export const parseHTML = (text) => {
     decodeEntities: true,
     withEndIndices: false,
     withStartIndices: false,
+    recognizeSelfClosing: false,
   })
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
