@@ -1,15 +1,26 @@
 import * as cheerio from 'cheerio';
 
+const hasInArray = (array, string) => {
+  for (let i of array) {
+    if (!i.includes(string)) return true;
+  }
+  return false;
+};
+
 export const parseHTML = (text) => {
+  const array = [
+    ...text.matchAll(
+      /(```(.|\n)*?```|<pre>(.|\n)*?<\/pre>|<code>(.|\n)*?<\/code>)/gm,
+    ),
+  ];
   const $ = cheerio.load(
     text,
     {
-      decodeEntities: false,
+      decodeEntities: true,
     },
     false,
   );
   const head = '######';
-
   $('code').each(function (i, e) {
     const content = $(this)
       .toString()
@@ -28,41 +39,54 @@ export const parseHTML = (text) => {
     $(this).replaceWith(code);
   });
   $('div').each(function (i, e) {
-    $(this).replaceWith($(this).html().trim());
+    if (!hasInArray(array, $(this).html()))
+      $(this).replaceWith($(this).html().trim());
   });
   $('img').each(function (i, e) {
-    const img = `![img${i}](${$(this).attr('src')})`;
-    $(this).replaceWith(img);
+    if (!hasInArray(array, $(this).html())) {
+      const img = `![img${i}](${$(this).attr('src')})`;
+      $(this).replaceWith(img);
+    }
   });
   $('a').each(function () {
-    let link = `[${$(this).text()}](${$(this).attr('href')})`;
-    $(this).replaceWith(link);
+    if (!hasInArray(array, $(this).html())) {
+      let link = `[${$(this).text()}](${$(this).attr('href')})`;
+      $(this).replaceWith(link);
+    }
   });
   $('b').each(function () {
-    const link = `**${$(this).text()}**`;
-    $(this).replaceWith(link);
+    if (!hasInArray(array, $(this).html())) {
+      const link = `**${$(this).text()}**`;
+      $(this).replaceWith(link);
+    }
   });
   $('del').each(function () {
-    const link = `~~${$(this).text()}~~`;
-    $(this).replaceWith(link);
+    if (!hasInArray(array, $(this).html())) {
+      const link = `~~${$(this).text()}~~`;
+      $(this).replaceWith(link);
+    }
   });
   $('hr').each(function () {
-    $(this).replaceWith('---');
+    if (!hasInArray(array, $(this).html())) $(this).replaceWith('---');
   });
   $('i').each(function () {
-    const link = `*${$(this).text()}*`;
-    $(this).replaceWith(link);
+    if (!hasInArray(array, $(this).parent().html())) {
+      const link = `*${$(this).text()}*`;
+      $(this).replaceWith(link);
+    }
   });
   $('p').each(function () {
-    $(this).replaceWith($(this).text());
+    if (!hasInArray(array, $(this).html())) $(this).replaceWith($(this).text());
   });
   $('br').each(function () {
-    $(this).replaceWith('\n');
+    if (!hasInArray(array, $(this).html())) $(this).replaceWith('\n');
   });
   for (let i = 1; i <= 6; i++) {
     $('h' + i).each(function () {
-      const headMarkdown = `${head.substring(0, i)} ${$(this).text()}`;
-      $(this).replaceWith(headMarkdown);
+      if (!hasInArray(array, $(this).html())) {
+        const headMarkdown = `${head.substring(0, i)} ${$(this).text()}`;
+        $(this).replaceWith(headMarkdown);
+      }
     });
   }
   return $.html({
